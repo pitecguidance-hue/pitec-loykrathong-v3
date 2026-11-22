@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ลอยกระทงออนไลน์ - วิทยาลัยเทคโนโลยีสารสนเทศเพชรบูรณ์ (PI-TEC)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: 'Chakra Petch', 'Noto Sans Thai', sans-serif;
+      --font-body: 'Noto Sans Thai', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: var(--font-body);
+      background-color: #050918;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: var(--font-display);
+    }
+
+    /* Responsive festival stage container for mobile, tablet, and desktop */
+    .festival-stage {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      min-height: 100dvh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #070d26 0%, #101b45 22%, #09132c 42%, #050a18 82%, #1d110a 100%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      transition: max-width 0.25s ease, border-radius 0.25s ease, margin 0.25s ease;
+    }
+
+    @media (min-width: 640px) {
+      .festival-stage {
+        max-width: 680px;
+        min-height: 94dvh;
+        margin: 3dvh auto;
+        border-radius: 26px;
+        overflow: hidden;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .festival-stage {
+        max-width: 1040px;
+        min-height: 92dvh;
+        margin: 4dvh auto;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+    }
+
+    .festival-stage.is-expanded {
+      max-width: 100% !important;
+      min-height: 100dvh !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    /* River surface with animated vertical light ripples */
+    .river-water {
+      position: relative;
+      flex: 1;
+      min-height: 430px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 210, 130, 0.14) 0%, rgba(16, 34, 72, 0.45) 35%, rgba(5, 11, 26, 0.96) 85%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(120, 165, 255, 0.04) 0px,
+          rgba(120, 165, 255, 0.04) 10px,
+          transparent 10px,
+          transparent 28px
+        );
+      overflow: hidden;
+    }
+
+    @media (min-width: 640px) {
+      .river-water {
+        min-height: 470px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .river-water {
+        min-height: 520px;
+      }
+    }
+
+    .ripple-wave {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        rgba(170, 205, 255, 0.06) 8px,
+        transparent 16px,
+        rgba(255, 215, 135, 0.04) 24px,
+        transparent 44px
+      );
+      animation: riverFlow 9s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes riverFlow {
+      0% {
+        transform: translateY(-28px);
+      }
+      100% {
+        transform: translateY(28px);
+      }
+    }
+
+    /* Floating sky lanterns */
+    @keyframes lanternAscend {
+      0% {
+        transform: translateY(20px) translateX(0) scale(0.82);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.95;
+      }
+      50% {
+        transform: translateY(-75px) translateX(12px) scale(0.95);
+      }
+      100% {
+        transform: translateY(-170px) translateX(-8px) scale(0.75);
+        opacity: 0;
+      }
+    }
+
+    .sky-lantern {
+      position: absolute;
+      animation: lanternAscend var(--dur, 12s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      pointer-events: none;
+    }
+
+    /* Gentle fireworks burst */
+    @keyframes fireworkPulse {
+      0%, 100% {
+        transform: scale(0.75);
+        opacity: 0.25;
+      }
+      50% {
+        transform: scale(1.12);
+        opacity: 0.95;
+      }
+    }
+
+    .firework-burst {
+      animation: fireworkPulse var(--fdur, 3.6s) ease-in-out infinite;
+      animation-delay: var(--fdelay, 0s);
+      pointer-events: none;
+    }
+
+    /* Bobbing animation for krathongs and greeting boat */
+    @keyframes gentleBob {
+      0%, 100% {
+        transform: translateY(0px) rotate(-1.2deg);
+      }
+      50% {
+        transform: translateY(-5px) rotate(1.2deg);
+      }
+    }
+
+    .bob-motion {
+      animation: gentleBob 3.4s ease-in-out infinite;
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% {
+        transform: scale(1) skewX(0deg);
+        opacity: 0.95;
+      }
+      50% {
+        transform: scale(1.12, 0.92) skewX(3deg);
+        opacity: 1;
+      }
+    }
+
+    .flame-flicker {
+      transform-origin: center bottom;
+      animation: flameFlicker 1.2s ease-in-out infinite;
+    }
+
+    /* Floating krathong wrapper inside river */
+    .floating-krathong {
+      position: absolute;
+      cursor: pointer;
+      user-select: none;
+      transform: translate(-50%, -50%);
+      transition: filter 0.2s ease;
+      z-index: 15;
+    }
+
+    .floating-krathong:hover {
+      filter: brightness(1.1) drop-shadow(0 0 12px rgba(255, 215, 120, 0.65));
+    }
+
+    .floating-krathong.selected {
+      z-index: 25;
+      filter: brightness(1.15) drop-shadow(0 0 16px rgba(255, 224, 130, 0.92));
+    }
+
+    /* Floating heart burst when clicking top-right heart button */
+    @keyframes heartFloatUp {
+      0% {
+        transform: translate(-50%, 0) scale(0.7);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translate(-50%, -95px) scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    .floating-heart-burst {
+      position: fixed;
+      z-index: 70;
+      pointer-events: none;
+      animation: heartFloatUp 1.15s ease-out forwards;
+    }
+
+    /* Prominent CTA button styling */
+    .cta-krathong-btn {
+      background: linear-gradient(90deg, #f9d47c 0%, #f7b28a 48%, #f48fb1 100%);
+      color: #1b1124;
+      box-shadow:
+        0 8px 26px rgba(244, 143, 177, 0.42),
+        0 0 0 2px rgba(255, 255, 255, 0.35) inset;
+      transition: transform 0.16s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .cta-krathong-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.05);
+      box-shadow:
+        0 12px 32px rgba(249, 212, 124, 0.55),
+        0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    .cta-krathong-btn:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    /* Wooden pier deck at bottom */
+    .wooden-pier {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(35, 16, 6, 0.55) 0px,
+          rgba(35, 16, 6, 0.55) 2px,
+          transparent 2px,
+          transparent 46px
+        ),
+        linear-gradient(180deg, #5c3115 0%, #3b1d0b 55%, #241005 100%);
+      border-top: 2px solid rgba(255, 198, 125, 0.35);
+      pointer-events: auto;
+    }
+
+    /* Custom scrollbar for modal */
+    .modal-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .modal-scroll::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .modal-scroll::-webkit-scrollbar-thumb {
+      background: rgba(251, 191, 36, 0.4);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Responsive Festival Stage -->
+  <main id="festivalStage" class="festival-stage">
+
+    <!-- ================= TOP HUD BAR ================= -->
+    <header class="relative z-30 flex items-start justify-between gap-2 px-3.5 sm:px-5 pt-3.5 sm:pt-4 pb-2">
+      <!-- Left: Title, Subtitle & Live Counter -->
+      <div class="min-w-0 flex-1">
+        <h1 class="font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide text-[#ffd670] drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] leading-tight">
+          ลอยกระทงออนไลน์
+        </h1>
+        <p class="text-xs sm:text-sm font-medium text-amber-50/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)] truncate">
+          วิทยาลัยเทคโนโลยีสารสนเทศเพชรบูรณ์ (PI-TEC)
+        </p>
+
+        <!-- Real-time counter starting strictly at 0 -->
+        <div class="mt-2 inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-amber-300/30 backdrop-blur-sm shadow-md">
+          <span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse"></span>
+          <span id="counterText" class="text-xs sm:text-sm font-semibold text-amber-100 tabular-nums">
+            0 ลอยอยู่ · 0 ใบทั้งหมด
+          </span>
+          <span id="heartCountBadge" class="text-[11px] sm:text-xs font-semibold text-rose-300 border-l border-white/15 pl-2 tabular-nums">
+            ♥ 0 พลังบวก
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Sound, Heart (Positive Energy), Wish List, Fullscreen -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button
+          id="soundToggleBtn"
+          type="button"
+          title="เปิด/ปิด เสียงดนตรีบรรเลงเบาๆ"
+          aria-label="เปิดหรือปิดเสียงดนตรีบรรเลง"
+          aria-pressed="false"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900/75 hover:bg-slate-800/90 border border-amber-300/30 flex items-center justify-center text-amber-200 shadow-lg cursor-pointer transition active:scale-95"
+        >
+          <svg id="soundOffIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+          <svg id="soundOnIcon" class="w-4 h-4 sm:w-5 sm:h-5 hidden text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+        </button>
+
+        <button
+          id="heartSendBtn"
+          type="button"
+          title="ส่งหัวใจและพลังบวกให้สายน้ำ PI-TEC"
+          aria-label="ส่งหัวใจและพลังบวก"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900/75 hover:bg-slate-800/90 border border-rose-300/30 flex items-center justify-center text-rose-400 shadow-lg cursor-pointer transition active:scale-95"
+        >
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </button>
+
+        <button
+          id="wishPanelBtn"
+          type="button"
+          title="ดูรายชื่อกระทงที่ลอยอยู่และคำอธิษฐาน"
+          aria-label="ดูรายชื่อกระทงที่ลอยอยู่"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900/75 hover:bg-slate-800/90 border border-white/20 flex items-center justify-center text-amber-200 shadow-lg cursor-pointer transition"
+        >
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h6m-6 4h8M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />
+          </svg>
+        </button>
+
+        <button
+          id="fullscreenBtn"
+          type="button"
+          title="ขยายเต็มหน้าจอ / มุมมองกว้าง"
+          aria-label="ขยายเต็มหน้าจอ"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900/75 hover:bg-slate-800/90 border border-white/20 flex items-center justify-center text-amber-100 shadow-lg cursor-pointer transition"
+        >
+          <svg id="expandIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+          <svg id="compressIcon" class="w-4 h-4 sm:w-5 sm:h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4m0 5H4m5 0L4 4m6 11v5m0-5H4m5 0l-5 5m11-11V4m0 5h5m-5 0l5-5m-6 11v5m0-5h5m-5 0l5 5" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= UPPER SKY, FIREWORKS, LANTERNS & PI-TEC GATE ================= -->
+    <section aria-label="บรรยากาศท้องฟ้าและป้ายวิทยาลัยเทคโนโลยีสารสนเทศเพชรบูรณ์" class="relative z-10 -mt-16 pt-16">
+      <div class="relative w-full h-[225px] sm:h-[260px] lg:h-[300px] overflow-hidden">
+        <!-- Full Moon & Warm Halo -->
+        <div class="absolute top-12 right-6 sm:right-14 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-100 shadow-[0_0_45px_14px_rgba(255,224,145,0.45)] pointer-events-none"></div>
+
+        <!-- Twinkling Stars -->
+        <div id="starsContainer" class="absolute inset-0 pointer-events-none"></div>
+
+        <!-- Gentle Fireworks -->
+        <svg class="firework-burst absolute top-12 right-20 sm:right-36 w-16 h-16 sm:w-20 sm:h-20 text-amber-300" style="--fdur:3.8s; --fdelay:0.2s;" viewBox="0 0 100 100">
+          <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="50" y1="12" x2="50" y2="26" />
+            <line x1="50" y1="74" x2="50" y2="88" />
+            <line x1="12" y1="50" x2="26" y2="50" />
+            <line x1="74" y1="50" x2="88" y2="50" />
+            <line x1="23" y1="23" x2="33" y2="33" />
+            <line x1="67" y1="67" x2="77" y2="77" />
+            <line x1="77" y1="23" x2="67" y2="33" />
+            <line x1="33" y1="67" x2="23" y2="77" />
+          </g>
+          <circle cx="50" cy="50" r="4" fill="#fde68a" />
+        </svg>
+
+        <svg class="firework-burst absolute top-16 right-8 sm:right-16 w-14 h-14 text-pink-300" style="--fdur:4.4s; --fdelay:1.5s;" viewBox="0 0 100 100">
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="50" y1="16" x2="50" y2="28" />
+            <line x1="50" y1="72" x2="50" y2="84" />
+            <line x1="16" y1="50" x2="28" y2="50" />
+            <line x1="72" y1="50" x2="84" y2="50" />
+            <line x1="26" y1="26" x2="35" y2="35" />
+            <line x1="65" y1="65" x2="74" y2="74" />
+            <line x1="74" y1="26" x2="65" y2="35" />
+            <line x1="35" y1="65" x2="26" y2="74" />
+          </g>
+          <circle cx="50" cy="50" r="3.5" fill="#fbcfe8" />
+        </svg>
+
+        <!-- Floating Sky Lanterns -->
+        <div class="sky-lantern left-[56%] top-[68%]" style="--dur:11s; --delay:0s;">
+          <svg class="w-5 h-7" viewBox="0 0 28 38">
+            <path d="M7 4 Q14 0 21 4 L25 22 Q14 27 3 22 Z" fill="#fb923c" />
+            <path d="M9 5 Q14 2 19 5 L21 22 Q14 25 7 22 Z" fill="#fde047" opacity="0.8" />
+            <rect x="11" y="25" width="6" height="2.5" rx="1" fill="#78350f" />
+            <circle cx="14" cy="29" r="2" fill="#fef08a" />
+          </svg>
+        </div>
+        <div class="sky-lantern left-[72%] top-[76%]" style="--dur:13.5s; --delay:3.2s;">
+          <svg class="w-4 h-6" viewBox="0 0 28 38">
+            <path d="M7 4 Q14 0 21 4 L25 22 Q14 27 3 22 Z" fill="#f97316" />
+            <path d="M9 5 Q14 2 19 5 L21 22 Q14 25 7 22 Z" fill="#fef08a" opacity="0.75" />
+            <rect x="11" y="25" width="6" height="2.5" rx="1" fill="#78350f" />
+          </svg>
+        </div>
+
+        <!-- Campus Buildings, Thai Flag, Yellow Flags & Palm Trees -->
+        <svg class="absolute inset-x-0 bottom-8 w-full h-36 sm:h-44 pointer-events-none" viewBox="0 0 600 180" preserveAspectRatio="xMidYMax slice">
+          <rect x="25" y="38" width="125" height="115" fill="#3a527a" opacity="0.72" />
+          <rect x="40" y="54" width="24" height="22" rx="2" fill="#fde68a" opacity="0.55" />
+          <rect x="76" y="54" width="24" height="22" rx="2" fill="#93c5fd" opacity="0.45" />
+          <rect x="112" y="54" width="24" height="22" rx="2" fill="#fde68a" opacity="0.45" />
+          <rect x="40" y="90" width="24" height="22" rx="2" fill="#93c5fd" opacity="0.4" />
+          <rect x="76" y="90" width="24" height="22" rx="2" fill="#fde68a" opacity="0.5" />
+
+          <rect x="455" y="48" width="125" height="105" fill="#33496e" opacity="0.72" />
+          <rect x="470" y="64" width="24" height="20" rx="2" fill="#fde68a" opacity="0.5" />
+          <rect x="506" y="64" width="24" height="20" rx="2" fill="#93c5fd" opacity="0.45" />
+          <rect x="542" y="64" width="24" height="20" rx="2" fill="#fde68a" opacity="0.4" />
+
+          <!-- Flagpole & Thai Flag -->
+          <line x1="342" y1="8" x2="342" y2="115" stroke="#e2e8f0" stroke-width="2.5" />
+          <path d="M343 12 Q368 6 392 13 L392 42 Q368 35 343 41 Z" fill="#dc2626" />
+          <path d="M343 18 Q368 12 392 19 L392 36 Q368 29 343 35 Z" fill="#ffffff" />
+          <path d="M343 21 Q368 15 392 22 L392 33 Q368 26 343 32 Z" fill="#1d4ed8" />
+
+          <!-- Yellow Flags -->
+          <line x1="255" y1="45" x2="255" y2="115" stroke="#cbd5e1" stroke-width="1.8" />
+          <polygon points="256,47 282,55 256,64" fill="#facc15" />
+
+          <line x1="418" y1="45" x2="418" y2="115" stroke="#cbd5e1" stroke-width="1.8" />
+          <polygon points="419,47 445,55 419,64" fill="#facc15" />
+
+          <!-- Palm Foliage Accents -->
+          <g fill="#166534" opacity="0.9">
+            <ellipse cx="45" cy="95" rx="34" ry="12" transform="rotate(-22 45 95)" />
+            <ellipse cx="68" cy="88" rx="34" ry="11" transform="rotate(18 68 88)" />
+            <ellipse cx="545" cy="95" rx="34" ry="12" transform="rotate(20 545 95)" />
+            <ellipse cx="520" cy="88" rx="34" ry="11" transform="rotate(-18 520 88)" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- PI-TEC College Gate Sign Banner -->
+      <div class="relative z-20 -mt-14 mx-3 sm:mx-auto sm:max-w-[540px] lg:max-w-[650px]">
+        <svg class="w-full h-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.75)]" viewBox="0 0 460 116">
+          <defs>
+            <linearGradient id="gateTrim" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fff4c2" />
+              <stop offset="55%" stop-color="#e8c77b" />
+              <stop offset="100%" stop-color="#b68c3e" />
+            </linearGradient>
+            <linearGradient id="brickWall" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#9e6c3b" />
+              <stop offset="50%" stop-color="#b88149" />
+              <stop offset="100%" stop-color="#946233" />
+            </linearGradient>
+          </defs>
+
+          <rect x="6" y="46" width="52" height="58" fill="#f3e9cf" stroke="#c8a96e" stroke-width="1.5" />
+          <rect x="402" y="46" width="52" height="58" fill="#f3e9cf" stroke="#c8a96e" stroke-width="1.5" />
+
+          <path
+            d="M52 106 L52 40 L94 40 L106 24 L166 24 L178 12 L282 12 L294 24 L354 24 L366 40 L408 40 L408 106 Z"
+            fill="url(#gateTrim)"
+            stroke="#78531b"
+            stroke-width="2"
+          />
+
+          <path
+            d="M60 102 L60 46 L99 46 L111 30 L170 30 L182 18 L278 18 L290 30 L349 30 L361 46 L400 46 L400 102 Z"
+            fill="url(#brickWall)"
+          />
+
+          <g stroke="#6e441c" stroke-width="0.7" opacity="0.35">
+            <line x1="65" y1="56" x2="395" y2="56" />
+            <line x1="65" y1="68" x2="395" y2="68" />
+            <line x1="65" y1="80" x2="395" y2="80" />
+            <line x1="65" y1="92" x2="395" y2="92" />
+          </g>
+
+          <circle cx="230" cy="33" r="14" fill="#e2e8f0" stroke="#b88149" stroke-width="2.5" />
+          <circle cx="230" cy="33" r="10" fill="#1e3a8a" opacity="0.18" />
+          <text x="230" y="36.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1e293b">PI-TEC</text>
+
+          <rect x="74" y="51" width="312" height="44" rx="5" fill="#12141a" stroke="#f5d488" stroke-width="1.6" />
+          <text
+            x="230"
+            y="69"
+            text-anchor="middle"
+            font-size="13.5"
+            font-weight="700"
+            fill="#ffffff"
+            font-family="'Noto Sans Thai', sans-serif"
+          >
+            วิทยาลัยเทคโนโลยีสารสนเทศเพชรบูรณ์
+          </text>
+          <text
+            x="230"
+            y="86"
+            text-anchor="middle"
+            font-size="9.5"
+            font-weight="600"
+            fill="#f7d074"
+            font-family="'Chakra Petch', sans-serif"
+          >
+            Phetchabun Information Technological College
+          </text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= RIVER SURFACE & FLOATING KRATHONGS ================= -->
+    <section id="riverSection" aria-label="ผืนน้ำสำหรับลอยกระทง" class="river-water flex-1 flex flex-col justify-between">
+      <!-- River Reflection Strip under Gate -->
+      <div class="w-full h-10 bg-gradient-to-b from-amber-200/12 via-sky-900/20 to-transparent pointer-events-none"></div>
+
+      <!-- Animated Water Ripples -->
+      <div class="ripple-wave"></div>
+
+      <!-- Subtle Glowing River Fireflies / Particles -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <span class="absolute left-[22%] top-[34%] w-2.5 h-2.5 rounded-full bg-amber-200/45 blur-[1px]"></span>
+        <span class="absolute left-[48%] top-[62%] w-3 h-3 rounded-full bg-emerald-200/35 blur-[1px]"></span>
+        <span class="absolute left-[74%] top-[28%] w-2 h-2 rounded-full bg-amber-100/45 blur-[1px]"></span>
+        <span class="absolute left-[31%] top-[76%] w-2.5 h-2.5 rounded-full bg-pink-200/35 blur-[1px]"></span>
+      </div>
+
+      <!-- Empty River Hint (Hidden automatically as soon as at least 1 krathong floats) -->
+      <div id="emptyRiverHint" class="relative z-10 mt-12 mx-auto max-w-xs sm:max-w-sm px-4 py-3 rounded-2xl bg-slate-900/55 border border-amber-200/20 backdrop-blur-[2px] text-center pointer-events-none">
+        <p class="text-xs sm:text-sm font-medium text-amber-100/90">
+          ผืนน้ำกำลังสงบนิ่ง พร้อมรับกระทงใบแรกของคุณ
+        </p>
+        <p class="text-[11px] sm:text-xs text-slate-300/80 mt-0.5">
+          กดปุ่ม "ทำกระทงของฉัน" ด้านล่างเพื่อเลือกแบบกระทงและดอกไม้ได้เลยค่ะ
+        </p>
+      </div>
+
+      <!-- Container where active krathongs & wish bubbles float -->
+      <div id="krathongsLayer" class="absolute inset-0 z-10"></div>
+
+      <!-- Selected Krathong Expanded Wish Card -->
+      <div
+        id="wishInspector"
+        class="hidden absolute top-3 left-1/2 -translate-x-1/2 z-30 w-[92%] max-w-md px-4 py-3 rounded-2xl bg-slate-950/92 border border-amber-300/50 shadow-[0_14px_34px_rgba(0,0,0,0.85)] backdrop-blur-md"
+      >
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span id="inspectorSender" class="text-xs sm:text-sm font-bold text-amber-300"></span>
+              <span id="inspectorMeta" class="text-[11px] px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/25"></span>
+            </div>
+            <p id="inspectorWish" class="text-xs sm:text-sm text-white leading-relaxed mt-1 break-words"></p>
+          </div>
+          <button
+            id="closeInspectorBtn"
+            type="button"
+            aria-label="ปิดข้อความอธิษฐาน"
+            class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center text-xs shrink-0 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Female Greeting Character on Boat (Lower Right of River) -->
+      <div id="greetingBoatGroup" class="bob-motion absolute bottom-4 right-2 sm:right-6 lg:right-10 z-20 flex flex-col items-end">
+        <div
+          id="greetingBubble"
+          role="button"
+          tabindex="0"
+          title="คลิกเพื่อเปิดหน้าสร้างกระทงของฉัน"
+          class="relative mb-1.5 mr-2 max-w-[235px] sm:max-w-[275px] px-3.5 py-2 rounded-2xl bg-gradient-to-br from-rose-100 via-pink-50 to-amber-50 text-slate-900 shadow-[0_10px_24px_rgba(0,0,0,0.55)] border border-pink-300/80 text-xs sm:text-sm font-medium leading-snug text-center cursor-pointer hover:brightness-105 transition"
+        >
+          <button
+            id="dismissGreetingBtn"
+            type="button"
+            title="ซ่อนข้อความทักทาย"
+            aria-label="ซ่อนข้อความทักทาย"
+            class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-slate-800 text-white text-[10px] flex items-center justify-center shadow cursor-pointer hover:bg-slate-700"
+          >
+            ✕
+          </button>
+          <span>ขอเชิญร่วมลอยกระทงกันนะคะ<br/>กดสร้างกระทงของตนเองได้เลยค่ะ</span>
+          <span class="absolute -bottom-1.5 right-8 w-3 h-3 rotate-45 bg-rose-50 border-r border-b border-pink-300/80"></span>
+        </div>
+
+        <svg class="w-36 sm:w-44 lg:w-48 h-20 sm:h-24 drop-shadow-[0_10px_16px_rgba(0,0,0,0.8)] pointer-events-none" viewBox="0 0 180 92">
+          <ellipse cx="92" cy="84" rx="58" ry="5" fill="#f59e0b" opacity="0.16" />
+          <path d="M22 56 Q92 84 164 52 Q154 72 92 77 Q34 73 22 56 Z" fill="#7c3f18" stroke="#3b1b07" stroke-width="2" />
+          <path d="M28 57 Q92 78 158 53" fill="none" stroke="#c27838" stroke-width="2" />
+          <rect x="58" y="56" width="14" height="5" rx="1.5" fill="#4a230b" />
+          <rect x="116" y="55" width="16" height="5" rx="1.5" fill="#4a230b" />
+
+          <!-- Female Character -->
+          <circle cx="72" cy="23" r="6.5" fill="#1e1b2e" />
+          <circle cx="65" cy="29" r="7.5" fill="#1e1b2e" />
+          <path d="M58 32 Q55 46 61 55 L69 55 L68 33 Z" fill="#1e1b2e" />
+          <circle cx="66" cy="30" r="6.2" fill="#fed7aa" />
+          <circle cx="68.5" cy="31.5" r="1.3" fill="#fb7185" opacity="0.6" />
+          <path d="M65.5 33.5 Q67.5 35 69.5 33.2" fill="none" stroke="#9f1239" stroke-width="1.1" stroke-linecap="round" />
+          <path d="M58 37 Q66 36 74 37 L76 56 L57 56 Z" fill="#f472b6" />
+          <path d="M58 39 L74 52" stroke="#fde047" stroke-width="2" />
+          <path d="M74 41 Q83 37 86 31" fill="none" stroke="#fed7aa" stroke-width="3" stroke-linecap="round" />
+          <circle cx="86.5" cy="30.5" r="2.2" fill="#fed7aa" />
+
+          <!-- Paddle -->
+          <line x1="124" y1="36" x2="106" y2="82" stroke="#d97706" stroke-width="2.6" stroke-linecap="round" />
+          <path d="M106 72 L100 86 L110 86 Z" fill="#92400e" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= BOTTOM PIER & PROMINENT CTA BUTTON ================= -->
+    <footer class="wooden-pier relative z-40 px-4 pt-3.5 pb-5 sm:pb-6 flex flex-col items-center justify-center">
+      <button
+        id="openBuilderBtn"
+        type="button"
+        onclick="window.openKrathongBuilder && window.openKrathongBuilder()"
+        class="cta-krathong-btn font-display relative z-50 w-full max-w-[260px] sm:max-w-[290px] py-3 sm:py-3.5 px-6 rounded-full text-lg sm:text-xl font-bold tracking-wide cursor-pointer select-none"
+      >
+        ทำกระทงของฉัน
+      </button>
+    </footer>
+  </main>
+
+  <!-- ================= TOAST NOTIFICATION ================= -->
+  <div
+    id="statusToast"
+    class="fixed top-5 left-1/2 -translate-x-1/2 z-[70] hidden items-center gap-2 px-4 py-2.5 rounded-full bg-slate-900/95 text-amber-100 border border-amber-300/40 shadow-2xl text-xs sm:text-sm font-medium"
+    role="status"
+    aria-live="polite"
+  >
+    <span id="toastIcon">🕯️</span>
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- ================= WISHES HISTORY MODAL ================= -->
+  <div
+    id="wishesModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="wishesModalTitle"
+  >
+    <div class="w-full max-w-md max-h-[82dvh] flex flex-col rounded-3xl bg-slate-900 border border-amber-300/25 shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-slate-950/60">
+        <h2 id="wishesModalTitle" class="font-display text-base sm:text-lg font-bold text-amber-300">
+          คำอธิษฐานบนสายน้ำ PI-TEC
+        </h2>
+        <button
+          id="closeWishesBtn"
+          type="button"
+          class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center cursor-pointer"
+          aria-label="ปิดหน้าต่างคำอธิษฐาน"
+        >
+          ✕
+        </button>
+      </div>
+      <div id="wishesListContainer" class="p-4 space-y-2.5 overflow-y-auto modal-scroll flex-1"></div>
+    </div>
+  </div>
+
+  <!-- ================= KRATHONG BUILDER MODAL ================= -->
+  <div
+    id="builderModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-5 bg-slate-950/80 backdrop-blur-md"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="builderModalTitle"
+  >
+    <div class="w-full max-w-lg lg:max-w-5xl max-h-[93dvh] flex flex-col rounded-3xl bg-slate-900 border border-amber-300/30 shadow-[0_24px_64px_rgba(0,0,0,0.88)] overflow-hidden">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between gap-2 px-4 sm:px-6 py-3.5 border-b border-white/10 bg-gradient-to-r from-amber-500/15 via-rose-500/10 to-transparent">
+        <div class="min-w-0">
+          <h2 id="builderModalTitle" class="font-display text-lg sm:text-xl font-bold text-amber-300 truncate">
+            ออกแบบกระทงของฉัน
+          </h2>
+          <p class="text-xs text-slate-300 truncate">
+            เลือกแบบกระทงทันสมัย ดอกไม้หลากหลาย และคำอธิษฐาน · PI-TEC
+          </p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            id="randomizeDraftBtn"
+            type="button"
+            class="px-3 py-1.5 rounded-full bg-amber-400/15 hover:bg-amber-400/25 border border-amber-300/35 text-amber-200 text-xs font-semibold cursor-pointer transition"
+          >
+            สุ่มแบบทันสมัย
+          </button>
+          <button
+            id="closeBuilderBtn"
+            type="button"
+            class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition"
+            aria-label="ปิดหน้าต่างออกแบบกระทง"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Builder Content -->
+      <div class="p-4 sm:p-6 overflow-y-auto modal-scroll flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
+          <!-- Left: Live Krathong & Wish Preview -->
+          <div class="lg:col-span-5 lg:sticky lg:top-0">
+            <div class="relative rounded-2xl overflow-hidden border border-amber-200/20 bg-gradient-to-b from-[#0b1738] via-[#07122a] to-[#040917] py-6 px-4 flex flex-col items-center justify-center min-h-[260px] sm:min-h-[300px]">
+              <span class="absolute top-2.5 left-3 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-900/80 text-amber-200 border border-amber-300/25">
+                ตัวอย่างกระทงสด (Live Preview)
+              </span>
+              <span id="previewSpecTag" class="absolute top-2.5 right-3 text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/10 text-slate-200 max-w-[165px] truncate">
+              </span>
+
+              <!-- Live Wish Bubble Preview -->
+              <div class="mb-2 max-w-[270px] px-3.5 py-2 rounded-2xl bg-slate-950/90 border border-amber-300/45 text-center shadow-lg">
+                <p id="previewSender" class="text-xs font-bold text-amber-300 truncate">ชาว PI-TEC</p>
+                <p id="previewWish" class="text-xs text-slate-100 line-clamp-2 mt-0.5">ขอให้การเรียนราบรื่น สอบผ่านทุกวิชา</p>
+              </div>
+
+              <!-- Live Custom Krathong SVG -->
+              <div id="liveKrathongBox" class="bob-motion w-48 h-32 sm:w-56 sm:h-36 flex items-center justify-center"></div>
+            </div>
+          </div>
+
+          <!-- Right: Customization Options -->
+          <div class="lg:col-span-7 space-y-5">
+            <!-- 1. 6 Modern & Creative Krathong Base Styles -->
+            <div>
+              <label class="block font-display text-sm font-semibold text-amber-200 mb-2">
+                1. เลือกฐานกระทงทันสมัย &amp; สร้างสรรค์ (6 แบบ)
+              </label>
+              <div id="styleOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+            </div>
+
+            <!-- 2. 10 Diverse Flowers & Toppings -->
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <label class="block font-display text-sm font-semibold text-amber-200">
+                  2. เลือกดอกไม้และท็อปปิ้งตกแต่ง (เลือกได้หลายอย่าง · 10 แบบ)
+                </label>
+                <span id="selectedFlowersCount" class="text-[11px] px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/25 shrink-0">
+                  เลือกแล้ว 1 อย่าง
+                </span>
+              </div>
+              <div id="flowerOptionsGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2"></div>
+            </div>
+
+            <!-- 3. Candle / Light Glow Color -->
+            <div>
+              <label class="block font-display text-sm font-semibold text-amber-200 mb-2">
+                3. เลือกแสงเทียน / โคมไฟ / แสงประดับ
+              </label>
+              <div id="glowOptionsGrid" class="grid grid-cols-3 gap-2"></div>
+            </div>
+
+            <!-- 4. Decorative Accents -->
+            <div>
+              <label class="block font-display text-sm font-semibold text-amber-200 mb-2">
+                4. เลือกของตกแต่งเสริม
+              </label>
+              <div id="accentOptionsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+            </div>
+
+            <!-- 5. Sender Name & Wish -->
+            <div class="space-y-3">
+              <label class="block font-display text-sm font-semibold text-amber-200">
+                5. ชื่อผู้ลอย และคำอธิษฐาน
+              </label>
+
+              <input
+                id="senderInput"
+                type="text"
+                maxlength="40"
+                placeholder="เช่น น้องไอที PI-TEC / ปวช.2 คอมพิวเตอร์ธุรกิจ"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/90 border border-white/15 focus:border-amber-400 focus:outline-none text-sm text-white placeholder-slate-400"
+              />
+
+              <textarea
+                id="wishInput"
+                rows="2"
+                maxlength="120"
+                placeholder="พิมพ์คำอธิษฐานหรือข้อความอวยพรของคุณ..."
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/90 border border-white/15 focus:border-amber-400 focus:outline-none text-sm text-white placeholder-slate-400 resize-none"
+              ></textarea>
+
+              <!-- Quick Wish Suggestions -->
+              <div id="quickWishesBox" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer Submit Button -->
+      <div class="px-4 sm:px-6 py-3.5 border-t border-white/10 bg-slate-950/75 flex items-center justify-between gap-3">
+        <span class="hidden sm:inline text-xs text-slate-400">
+          กด "ปล่อยกระทงลงน้ำ" เพื่อส่งกระทงและคำอธิษฐานลงสู่สายน้ำ PI-TEC
+        </span>
+        <div class="flex items-center gap-2.5 ml-auto">
+          <button
+            id="cancelBuilderBtn"
+            type="button"
+            class="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/15 text-slate-200 text-sm font-medium cursor-pointer transition"
+          >
+            ยกเลิก
+          </button>
+          <button
+            id="launchKrathongBtn"
+            type="button"
+            class="cta-krathong-btn font-display px-6 py-2.5 rounded-full text-sm sm:text-base font-bold cursor-pointer"
+          >
+            ปล่อยกระทงลงน้ำ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ================= DATA DEFINITIONS =================
+      const KRATHONG_STYLES = [
+        {
+          id: 'banana-leaf',
+          name: 'ใบตองคลาสสิก',
+          badge: 'กลีบใบตองพับประณีต'
+        },
+        {
+          id: 'pink-lotus',
+          name: 'ดอกบัวชมพู',
+          badge: 'กลีบบัวชมพูซ้อนงดงาม'
+        },
+        {
+          id: 'coconut-shell',
+          name: 'กะลามะพร้าว',
+          badge: 'ฐานกะลาธรรมชาติสุดคลาสสิก'
+        },
+        {
+          id: 'rainbow-bread',
+          name: 'ขนมปังสายรุ้ง',
+          badge: 'สีสันพาสเทลสายรุ้งสดใส'
+        },
+        {
+          id: 'sugar-donut',
+          name: 'โดนัทน้ำตาล',
+          badge: 'โดนัทโรยเกล็ดน้ำตาลน่ารัก'
+        },
+        {
+          id: 'lucky-fried-egg',
+          name: 'ไข่ดาวสายมู',
+          badge: 'ไข่ดาวนำโชคเสริมสิริมงคล'
+        }
+      ];
+
+      const FLOWER_OPTIONS = [
+        { id: 'lotus-royal', name: 'ดอกบัวหลวง', color: '#f472b6' },
+        { id: 'marigold', name: 'ดอกดาวเรือง', color: '#f59e0b' },
+        { id: 'red-rose', name: 'ดอกกุหลาบแดง', color: '#e11d48' },
+        { id: 'white-jasmine', name: 'ดอกมะลิขาว', color: '#f8fafc' },
+        { id: 'purple-orchid', name: 'ดอกกล้วยไม้ม่วง', color: '#a855f7' },
+        { id: 'sunflower', name: 'ดอกทานตะวัน', color: '#eab308' },
+        { id: 'pink-sakura', name: 'ดอกซากุระชมพู', color: '#f9a8d4' },
+        { id: 'gardenia', name: 'ดอกพุดซ้อน', color: '#fef9c3' },
+        { id: 'lucky-coin', name: 'เหรียญทองนำโชค', color: '#fbbf24' },
+        { id: 'fun-snack', name: 'ลูกชิ้นปิ้ง/ขนมหวานสายฮา', color: '#fb7185' }
+      ];
+
+      const GLOW_OPTIONS = [
+        {
+          id: 'bright-candle',
+          name: 'เทียนสว่างไสว',
+          flame: '#fffbeb',
+          core: '#fde047',
+          aura: 'rgba(254, 240, 138, 0.58)'
+        },
+        {
+          id: 'warm-lantern',
+          name: 'โคมไฟอบอุ่น',
+          flame: '#fef08a',
+          core: '#f97316',
+          aura: 'rgba(251, 146, 60, 0.56)'
+        },
+        {
+          id: 'modern-neon',
+          name: 'แสงนีออนสมัยใหม่',
+          flame: '#e0f2fe',
+          core: '#38bdf8',
+          aura: 'rgba(56, 189, 248, 0.55)'
+        }
+      ];
+
+      const ACCENT_OPTIONS = [
+        { id: 'aroma-candle', name: 'เทียนหอม' },
+        { id: 'incense', name: 'ธูป' },
+        { id: 'ribbon', name: 'โบว์/ริบบิ้น' },
+        { id: 'starlight', name: 'ประกายดาว' }
+      ];
+
+      const QUICK_WISHES = [
+        'ขอให้การเรียนราบรื่น สอบผ่านทุกวิชา',
+        'ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง',
+        'ขอให้การงานก้าวหน้า เฮงๆ ปังๆ ตลอดปี'
+      ];
+
+      // ================= STRICT ZERO START STATE =================
+      // Always start at 0 floating krathongs, 0 total krathongs, and 0 positive hearts on load
+      let totalLaunchedCount = 0;
+      let positiveHeartsCount = 0;
+      let activeKrathongs = [];
+      let wishHistory = [];
+      let selectedKrathongId = null;
+
+      let draft = {
+        styleId: 'banana-leaf',
+        flowerIds: ['lotus-royal'],
+        glowId: 'bright-candle',
+        accentId: 'aroma-candle',
+        sender: '',
+        wish: QUICK_WISHES[0]
+      };
+
+      // ================= DOM REFERENCES =================
+      const festivalStage = document.getElementById('festivalStage');
+      const counterText = document.getElementById('counterText');
+      const heartCountBadge = document.getElementById('heartCountBadge');
+      const krathongsLayer = document.getElementById('krathongsLayer');
+      const emptyRiverHint = document.getElementById('emptyRiverHint');
+
+      const wishInspector = document.getElementById('wishInspector');
+      const inspectorSender = document.getElementById('inspectorSender');
+      const inspectorMeta = document.getElementById('inspectorMeta');
+      const inspectorWish = document.getElementById('inspectorWish');
+      const closeInspectorBtn = document.getElementById('closeInspectorBtn');
+
+      const greetingBoatGroup = document.getElementById('greetingBoatGroup');
+      const greetingBubble = document.getElementById('greetingBubble');
+      const dismissGreetingBtn = document.getElementById('dismissGreetingBtn');
+
+      const openBuilderBtn = document.getElementById('openBuilderBtn');
+      const builderModal = document.getElementById('builderModal');
+      const closeBuilderBtn = document.getElementById('closeBuilderBtn');
+      const cancelBuilderBtn = document.getElementById('cancelBuilderBtn');
+      const randomizeDraftBtn = document.getElementById('randomizeDraftBtn');
+      const launchKrathongBtn = document.getElementById('launchKrathongBtn');
+
+      const styleOptionsGrid = document.getElementById('styleOptionsGrid');
+      const flowerOptionsGrid = document.getElementById('flowerOptionsGrid');
+      const selectedFlowersCount = document.getElementById('selectedFlowersCount');
+      const glowOptionsGrid = document.getElementById('glowOptionsGrid');
+      const accentOptionsGrid = document.getElementById('accentOptionsGrid');
+      const senderInput = document.getElementById('senderInput');
+      const wishInput = document.getElementById('wishInput');
+      const quickWishesBox = document.getElementById('quickWishesBox');
+
+      const liveKrathongBox = document.getElementById('liveKrathongBox');
+      const previewSpecTag = document.getElementById('previewSpecTag');
+      const previewSender = document.getElementById('previewSender');
+      const previewWish = document.getElementById('previewWish');
+
+      const heartSendBtn = document.getElementById('heartSendBtn');
+      const wishPanelBtn = document.getElementById('wishPanelBtn');
+      const wishesModal = document.getElementById('wishesModal');
+      const closeWishesBtn = document.getElementById('closeWishesBtn');
+      const wishesListContainer = document.getElementById('wishesListContainer');
+
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const expandIcon = document.getElementById('expandIcon');
+      const compressIcon = document.getElementById('compressIcon');
+      const soundToggleBtn = document.getElementById('soundToggleBtn');
+      const soundOffIcon = document.getElementById('soundOffIcon');
+      const soundOnIcon = document.getElementById('soundOnIcon');
+
+      const statusToast = document.getElementById('statusToast');
+      const toastIcon = document.getElementById('toastIcon');
+      const toastMessage = document.getElementById('toastMessage');
+      let toastTimer = null;
+
+      let audioCtx = null;
+      let musicTimer = null;
+      let isMusicPlaying = false;
+
+      // ================= HELPER FUNCTIONS =================
+      function showToast(icon, msg) {
+        if (!statusToast || !toastIcon || !toastMessage) return;
+        toastIcon.textContent = icon;
+        toastMessage.textContent = msg;
+        statusToast.classList.remove('hidden');
+        statusToast.classList.add('flex');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          statusToast.classList.add('hidden');
+          statusToast.classList.remove('flex');
+        }, 3000);
+      }
+
+      function updateCounterDisplay() {
+        const floatingCount = activeKrathongs.length;
+        if (counterText) {
+          counterText.textContent = `${floatingCount} ลอยอยู่ · ${totalLaunchedCount} ใบทั้งหมด`;
+        }
+        if (heartCountBadge) {
+          heartCountBadge.textContent = `♥ ${positiveHeartsCount} พลังบวก`;
+        }
+        if (emptyRiverHint) {
+          emptyRiverHint.classList.toggle('hidden', floatingCount > 0);
+        }
+      }
+
+      function populateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const coords = [
+          [8, 18], [16, 36], [25, 14], [34, 28], [44, 12],
+          [53, 24], [62, 15], [71, 32], [80, 18], [89, 26],
+          [12, 52], [29, 46], [48, 42], [66, 48], [84, 44]
+        ];
+        starsContainer.innerHTML = coords
+          .map(([x, y], i) => {
+            const size = (i % 3) + 1.5;
+            const opacity = 0.35 + ((i % 4) * 0.16);
+            return `<span style="position:absolute;left:${x}%;top:${y}%;width:${size}px;height:${size}px;border-radius:9999px;background:#fffbeb;opacity:${opacity};"></span>`;
+          })
+          .join('');
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      // ================= SVG RENDERING FOR MODERN KRATHONGS & DIVERSE FLOWERS =================
+      function renderFlowerGraphic(flowerId, cx, cy, scale) {
+        const s = scale || 1;
+        const transformAttr = `transform="translate(${cx},${cy}) scale(${s})"`;
+
+        switch (flowerId) {
+          case 'lotus-royal':
+            return `
+              <g ${transformAttr}>
+                <path d="M-20 4 Q-12 -14 0 3 Q12 -14 20 4 Q0 12 -20 4 Z" fill="#ec4899" />
+                <path d="M-13 3 Q0 -18 13 3 Q0 10 -13 3 Z" fill="#f9a8d4" />
+                <circle cx="0" cy="0" r="3.5" fill="#fde047" />
+              </g>
+            `;
+          case 'marigold':
+            return `
+              <g ${transformAttr}>
+                <circle cx="0" cy="0" r="13" fill="#d97706" />
+                <circle cx="0" cy="0" r="9.5" fill="#f59e0b" />
+                <circle cx="0" cy="0" r="6" fill="#fbbf24" />
+                <circle cx="0" cy="0" r="3" fill="#fef08a" />
+              </g>
+            `;
+          case 'red-rose':
+            return `
+              <g ${transformAttr}>
+                <circle cx="0" cy="0" r="12" fill="#be123c" />
+                <path d="M-9 -2 A9 9 0 0 1 8 -3 A7 7 0 0 1 -5 8 A8 8 0 0 1 -9 -2 Z" fill="#fb7185" />
+                <circle cx="0" cy="0" r="4.5" fill="#fecdd3" />
+              </g>
+            `;
+          case 'white-jasmine':
+            return `
+              <g ${transformAttr}>
+                <circle cx="-8" cy="-3" r="4.8" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.7" />
+                <circle cx="0" cy="-7" r="4.8" fill="#fefce8" stroke="#e2e8f0" stroke-width="0.7" />
+                <circle cx="8" cy="-3" r="4.8" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.7" />
+                <circle cx="5" cy="5" r="4.8" fill="#fefce8" stroke="#e2e8f0" stroke-width="0.7" />
+                <circle cx="-5" cy="5" r="4.8" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.7" />
+                <circle cx="0" cy="0" r="2.5" fill="#fde047" />
+              </g>
+            `;
+          case 'purple-orchid':
+            return `
+              <g ${transformAttr}>
+                <ellipse cx="0" cy="-8" rx="5" ry="7" fill="#d946ef" />
+                <ellipse cx="-10" cy="-1" rx="7" ry="4.5" fill="#a855f7" />
+                <ellipse cx="10" cy="-1" rx="7" ry="4.5" fill="#a855f7" />
+                <ellipse cx="-6" cy="8" rx="5.5" ry="4" fill="#c084fc" />
+                <ellipse cx="6" cy="8" rx="5.5" ry="4" fill="#c084fc" />
+                <circle cx="0" cy="1" r="3.5" fill="#fde047" />
+              </g>
+            `;
+          case 'sunflower':
+            return `
+              <g ${transformAttr}>
+                <g fill="#facc15">
+                  <ellipse cx="0" cy="-10" rx="3.2" ry="6" />
+                  <ellipse cx="0" cy="10" rx="3.2" ry="6" />
+                  <ellipse cx="-10" cy="0" rx="6" ry="3.2" />
+                  <ellipse cx="10" cy="0" rx="6" ry="3.2" />
+                  <ellipse cx="-7" cy="-7" rx="3.2" ry="5.5" transform="rotate(-45 -7 -7)" />
+                  <ellipse cx="7" cy="-7" rx="3.2" ry="5.5" transform="rotate(45 7 -7)" />
+                  <ellipse cx="-7" cy="7" rx="3.2" ry="5.5" transform="rotate(45 -7 7)" />
+                  <ellipse cx="7" cy="7" rx="3.2" ry="5.5" transform="rotate(-45 7 7)" />
+                </g>
+                <circle cx="0" cy="0" r="6.5" fill="#78350f" />
+                <circle cx="0" cy="0" r="4.2" fill="#451a03" />
+              </g>
+            `;
+          case 'pink-sakura':
+            return `
+              <g ${transformAttr}>
+                <g fill="#f9a8d4">
+                  <circle cx="0" cy="-8" r="5.5" />
+                  <circle cx="8" cy="-2" r="5.5" />
+                  <circle cx="5" cy="7" r="5.5" />
+                  <circle cx="-5" cy="7" r="5.5" />
+                  <circle cx="-8" cy="-2" r="5.5" />
+                </g>
+                <circle cx="0" cy="0" r="3.5" fill="#f43f5e" />
+              </g>
+            `;
+          case 'gardenia':
+            return `
+              <g ${transformAttr}>
+                <circle cx="0" cy="0" r="11" fill="#fef9c3" stroke="#fde047" stroke-width="0.8" />
+                <circle cx="-5" cy="-2" r="6.5" fill="#ffffff" />
+                <circle cx="5" cy="-2" r="6.5" fill="#ffffff" />
+                <circle cx="0" cy="4" r="6.5" fill="#fefce8" />
+                <circle cx="0" cy="0" r="3" fill="#facc15" />
+              </g>
+            `;
+          case 'lucky-coin':
+            return `
+              <g ${transformAttr}>
+                <circle cx="0" cy="0" r="10.5" fill="#f59e0b" stroke="#fef08a" stroke-width="1.5" />
+                <circle cx="0" cy="0" r="7.5" fill="#fbbf24" />
+                <text x="0" y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#78350f">฿</text>
+              </g>
+            `;
+          default:
+            return `
+              <g ${transformAttr}>
+                <line x1="-10" y1="9" x2="10" y2="-9" stroke="#fde68a" stroke-width="2" stroke-linecap="round" />
+                <circle cx="-5" cy="4" r="4.2" fill="#fb7185" />
+                <circle cx="1" cy="-1" r="4.2" fill="#facc15" />
+                <circle cx="7" cy="-6" r="4.2" fill="#f472b6" />
+              </g>
+            `;
+        }
+      }
+
+      function renderSelectedFlowersLayer(flowerIds, styleId) {
+        const list = Array.isArray(flowerIds) && flowerIds.length > 0 ? flowerIds : ['lotus-royal'];
+        const baseY = styleId === 'sugar-donut' || styleId === 'lucky-fried-egg' ? 50 : 55;
+
+        if (list.length === 1) {
+          return renderFlowerGraphic(list[0], 70, baseY, 1.05);
+        }
+
+        const offsets = [
+          { dx: 0, dy: -2, sc: 0.95 },
+          { dx: -19, dy: 4, sc: 0.72 },
+          { dx: 19, dy: 4, sc: 0.72 },
+          { dx: -11, dy: -6, sc: 0.65 },
+          { dx: 11, dy: -6, sc: 0.65 }
+        ];
+
+        return list
+          .slice(0, 5)
+          .map((id, idx) => {
+            const pos = offsets[idx] || { dx: 0, dy: 0, sc: 0.7 };
+            return renderFlowerGraphic(id, 70 + pos.dx, baseY + pos.dy, pos.sc);
+          })
+          .join('');
+      }
+
+      function buildKrathongSVG(styleId, flowerIds, glowId, accentId) {
+        const glow = GLOW_OPTIONS.find((g) => g.id === glowId) || GLOW_OPTIONS[0];
+        const flowersKey = Array.isArray(flowerIds) ? flowerIds.join('_') : String(flowerIds || 'lotus-royal');
+        const filterId = `glow-${styleId}-${flowersKey}-${glowId}-${accentId}`.replace(/[^a-zA-Z0-9-]/g, '');
+
+        let baseLayer = '';
+        switch (styleId) {
+          case 'banana-leaf':
+            baseLayer = `
+              <polygon points="22,64 40,48 70,53 100,48 118,64 96,76 44,76" fill="#15803d" stroke="#14532d" stroke-width="1.5" />
+              <polygon points="32,62 46,45 60,64" fill="#22c55e" />
+              <polygon points="54,64 70,44 86,64" fill="#4ade80" />
+              <polygon points="80,64 94,45 108,62" fill="#22c55e" />
+              <ellipse cx="70" cy="58" rx="32" ry="9" fill="#bbf7d0" opacity="0.85" />
+            `;
+            break;
+          case 'pink-lotus':
+            baseLayer = `
+              <ellipse cx="70" cy="65" rx="46" ry="14" fill="#f472b6" stroke="#db2777" stroke-width="1.5" />
+              <path d="M27 63 Q38 42 52 63 Z" fill="#f9a8d4" />
+              <path d="M46 65 Q70 38 94 65 Z" fill="#fbcfe8" />
+              <path d="M88 63 Q102 42 113 63 Z" fill="#f9a8d4" />
+              <ellipse cx="70" cy="58" rx="31" ry="8.5" fill="#fdf2f8" opacity="0.8" />
+            `;
+            break;
+          case 'coconut-shell':
+            baseLayer = `
+              <path d="M24 54 Q70 86 116 54 Q112 76 70 80 Q28 76 24 54 Z" fill="#5c3317" stroke="#3b1d09" stroke-width="1.8" />
+              <ellipse cx="70" cy="55" rx="46" ry="12" fill="#7c4722" stroke="#4a260e" stroke-width="1.4" />
+              <ellipse cx="70" cy="55" rx="37" ry="8.5" fill="#f8fafc" opacity="0.92" />
+            `;
+            break;
+          case 'rainbow-bread':
+            baseLayer = `
+              <ellipse cx="70" cy="67" rx="45" ry="13" fill="#fde68a" stroke="#f59e0b" stroke-width="1.4" />
+              <path d="M28 52 Q70 40 112 52 L108 66 Q70 74 32 66 Z" fill="#fbcfe8" />
+              <path d="M32 55 Q70 46 108 55" stroke="#38bdf8" stroke-width="3.2" fill="none" />
+              <path d="M34 60 Q70 52 106 60" stroke="#4ade80" stroke-width="3.2" fill="none" />
+              <ellipse cx="70" cy="50" rx="33" ry="7.5" fill="#fffbeb" opacity="0.9" />
+            `;
+            break;
+          case 'sugar-donut':
+            baseLayer = `
+              <ellipse cx="70" cy="62" rx="45" ry="15" fill="#d97706" stroke="#92400e" stroke-width="1.6" />
+              <ellipse cx="70" cy="58" rx="40" ry="11.5" fill="#f9a8d4" />
+              <circle cx="48" cy="56" r="2" fill="#fef08a" />
+              <circle cx="62" cy="52" r="2" fill="#38bdf8" />
+              <circle cx="82" cy="53" r="2" fill="#a855f7" />
+              <circle cx="94" cy="58" r="2" fill="#4ade80" />
+              <ellipse cx="70" cy="58" rx="13" ry="4.5" fill="#7c3f18" />
+            `;
+            break;
+          default:
+            // Lucky fried egg base
+            baseLayer = `
+              <path d="M26 63 Q24 47 45 45 Q66 42 86 45 Q114 47 114 63 Q113 76 70 77 Q28 76 26 63 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.6" />
+              <ellipse cx="64" cy="58" rx="18" ry="10" fill="#fbbf24" />
+              <ellipse cx="62" cy="55" rx="7" ry="3.5" fill="#fef08a" opacity="0.7" />
+            `;
+            break;
+        }
+
+        let accentLayer = '';
+        switch (accentId) {
+          case 'incense':
+            accentLayer = `
+              <line x1="58" y1="53" x2="51" y2="37" stroke="#334155" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="51" cy="36.5" r="2" fill="#ef4444" />
+              <line x1="82" y1="53" x2="89" y2="37" stroke="#334155" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="89" cy="36.5" r="2" fill="#ef4444" />
+            `;
+            break;
+          case 'ribbon':
+            accentLayer = `
+              <path d="M46 65 Q53 76 44 82" fill="none" stroke="#fb7185" stroke-width="2.4" stroke-linecap="round" />
+              <path d="M94 65 Q87 76 96 82" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round" />
+              <circle cx="46" cy="65" r="3" fill="#f43f5e" />
+              <circle cx="94" cy="65" r="3" fill="#f59e0b" />
+            `;
+            break;
+          case 'starlight':
+            accentLayer = `
+              <circle cx="34" cy="36" r="2.2" fill="#fef08a" />
+              <circle cx="106" cy="35" r="2.2" fill="#fde68a" />
+              <circle cx="44" cy="24" r="1.5" fill="#ffffff" />
+              <circle cx="96" cy="25" r="1.5" fill="#ffffff" />
+            `;
+            break;
+          default:
+            accentLayer = `
+              <ellipse cx="70" cy="39" rx="11" ry="3.5" fill="#fef3c7" opacity="0.55" />
+            `;
+            break;
+        }
+
+        const flowersSvg = renderSelectedFlowersLayer(flowerIds, styleId);
+
+        return `
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 140 94">
+            <defs>
+              <filter id="${filterId}" x="-65%" y="-65%" width="230%" height="230%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <ellipse cx="70" cy="70" rx="54" ry="14" fill="${glow.aura}" />
+
+            ${baseLayer}
+            ${flowersSvg}
+            ${accentLayer}
+
+            <rect x="67.5" y="29" width="5" height="15" rx="1.5" fill="#fffbeb" stroke="#d97706" stroke-width="0.8" />
+            <g class="flame-flicker" filter="url(#${filterId})">
+              <path d="M70 13 Q76.5 21.5 70 29.5 Q63.5 21.5 70 13 Z" fill="${glow.core}" />
+              <path d="M70 17.5 Q73.5 23 70 28.5 Q66.5 23 70 17.5 Z" fill="${glow.flame}" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // ================= BUILDER MODAL CONTROLS =================
+      function getSelectedFlowerLabels(flowerIds) {
+        const list = Array.isArray(flowerIds) ? flowerIds : [];
+        const names = list
+          .map((id) => {
+            const found = FLOWER_OPTIONS.find((f) => f.id === id);
+            return found ? found.name : null;
+          })
+          .filter(Boolean);
+        return names.length > 0 ? names : [FLOWER_OPTIONS[0].name];
+      }
+
+      function renderBuilderOptions() {
+        if (styleOptionsGrid) {
+          styleOptionsGrid.innerHTML = KRATHONG_STYLES.map((item) => {
+            const active = draft.styleId === item.id;
+            return `
+              <button
+                type="button"
+                data-style-id="${item.id}"
+                class="style-choice text-left px-3 py-2.5 rounded-xl border transition cursor-pointer ${
+                  active
+                    ? 'bg-amber-400/20 border-amber-300 text-white shadow-md'
+                    : 'bg-slate-800/75 border-white/10 text-slate-200 hover:border-white/25'
+                }"
+              >
+                <div class="text-xs sm:text-sm font-semibold">${escapeHtml(item.name)}</div>
+                <div class="text-[11px] text-amber-200/80 mt-0.5">${escapeHtml(item.badge)}</div>
+              </button>
+            `;
+          }).join('');
+        }
+
+        if (selectedFlowersCount) {
+          selectedFlowersCount.textContent = `เลือกแล้ว ${draft.flowerIds.length} อย่าง`;
+        }
+
+        if (flowerOptionsGrid) {
+          flowerOptionsGrid.innerHTML = FLOWER_OPTIONS.map((fl) => {
+            const active = draft.flowerIds.includes(fl.id);
+            return `
+              <button
+                type="button"
+                data-flower-id="${fl.id}"
+                aria-pressed="${active ? 'true' : 'false'}"
+                class="flower-choice flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-left text-[11px] sm:text-xs font-semibold transition cursor-pointer ${
+                  active
+                    ? 'bg-amber-400/25 border-amber-300 text-white shadow-md ring-1 ring-amber-300/50'
+                    : 'bg-slate-800/75 border-white/10 text-slate-200 hover:border-white/25'
+                }"
+              >
+                <span class="w-3 h-3 rounded-full shrink-0" style="background:${fl.color}; box-shadow:0 0 6px ${fl.color};"></span>
+                <span class="leading-tight line-clamp-2">${escapeHtml(fl.name)}</span>
+              </button>
+            `;
+          }).join('');
+        }
+
+        if (glowOptionsGrid) {
+          glowOptionsGrid.innerHTML = GLOW_OPTIONS.map((g) => {
+            const active = draft.glowId === g.id;
+            return `
+              <button
+                type="button"
+                data-glow-id="${g.id}"
+                class="glow-choice flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition cursor-pointer ${
+                  active
+                    ? 'bg-amber-400/20 border-amber-300 text-white'
+                    : 'bg-slate-800/75 border-white/10 text-slate-200 hover:border-white/25'
+                }"
+              >
+                <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background:${g.core}; box-shadow:0 0 8px ${g.core};"></span>
+                <span>${escapeHtml(g.name)}</span>
+              </button>
+            `;
+          }).join('');
+        }
+
+        if (accentOptionsGrid) {
+          accentOptionsGrid.innerHTML = ACCENT_OPTIONS.map((acc) => {
+            const active = draft.accentId === acc.id;
+            return `
+              <button
+                type="button"
+                data-accent-id="${acc.id}"
+                class="accent-choice px-2.5 py-2 rounded-xl border text-xs font-semibold text-center transition cursor-pointer ${
+                  active
+                    ? 'bg-amber-400/20 border-amber-300 text-white'
+                    : 'bg-slate-800/75 border-white/10 text-slate-200 hover:border-white/25'
+                }"
+              >
+                ${escapeHtml(acc.name)}
+              </button>
+            `;
+          }).join('');
+        }
+
+        if (quickWishesBox) {
+          quickWishesBox.innerHTML = QUICK_WISHES.map((text) => {
+            return `
+              <button
+                type="button"
+                data-quick-wish="${escapeHtml(text)}"
+                class="quick-wish-btn text-[11px] sm:text-xs px-2.5 py-1.5 rounded-full bg-slate-800 hover:bg-amber-400/20 text-amber-100 border border-amber-300/25 cursor-pointer transition"
+              >
+                + ${escapeHtml(text)}
+              </button>
+            `;
+          }).join('');
+        }
+
+        if (styleOptionsGrid) {
+          styleOptionsGrid.querySelectorAll('.style-choice').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              draft.styleId = btn.getAttribute('data-style-id');
+              renderBuilderOptions();
+              updateLivePreview();
+            });
+          });
+        }
+
+        if (flowerOptionsGrid) {
+          flowerOptionsGrid.querySelectorAll('.flower-choice').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const fId = btn.getAttribute('data-flower-id');
+              if (!fId) return;
+              const existsIdx = draft.flowerIds.indexOf(fId);
+              if (existsIdx >= 0) {
+                if (draft.flowerIds.length > 1) {
+                  draft.flowerIds.splice(existsIdx, 1);
+                }
+              } else {
+                draft.flowerIds.push(fId);
+                if (draft.flowerIds.length > 5) {
+                  draft.flowerIds.shift();
+                }
+              }
+              renderBuilderOptions();
+              updateLivePreview();
+            });
+          });
+        }
+
+        if (glowOptionsGrid) {
+          glowOptionsGrid.querySelectorAll('.glow-choice').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              draft.glowId = btn.getAttribute('data-glow-id');
+              renderBuilderOptions();
+              updateLivePreview();
+            });
+          });
+        }
+
+        if (accentOptionsGrid) {
+          accentOptionsGrid.querySelectorAll('.accent-choice').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              draft.accentId = btn.getAttribute('data-accent-id');
+              renderBuilderOptions();
+              updateLivePreview();
+            });
+          });
+        }
+
+        if (quickWishesBox) {
+          quickWishesBox.querySelectorAll('.quick-wish-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const w = btn.getAttribute('data-quick-wish') || '';
+              draft.wish = w;
+              if (wishInput) wishInput.value = w;
+              updateLivePreview();
+            });
+          });
+        }
+      }
+
+      function updateLivePreview() {
+        const styleObj = KRATHONG_STYLES.find((s) => s.id === draft.styleId) || KRATHONG_STYLES[0];
+        const flowerLabels = getSelectedFlowerLabels(draft.flowerIds);
+        const displaySender = (draft.sender || '').trim() || 'ชาว PI-TEC';
+        const displayWish = (draft.wish || '').trim() || 'ขอให้มีความสุข สมหวังทุกประการ';
+
+        if (previewSpecTag) previewSpecTag.textContent = `${styleObj.name} · ${flowerLabels.join(', ')}`;
+        if (previewSender) previewSender.textContent = displaySender;
+        if (previewWish) previewWish.textContent = displayWish;
+        if (liveKrathongBox) {
+          liveKrathongBox.innerHTML = buildKrathongSVG(draft.styleId, draft.flowerIds, draft.glowId, draft.accentId);
+        }
+      }
+
+      function randomizeDraft() {
+        draft.styleId = KRATHONG_STYLES[Math.floor(Math.random() * KRATHONG_STYLES.length)].id;
+        const shuffled = [...FLOWER_OPTIONS].sort(() => Math.random() - 0.5);
+        const count = 1 + Math.floor(Math.random() * 3);
+        draft.flowerIds = shuffled.slice(0, count).map((f) => f.id);
+        draft.glowId = GLOW_OPTIONS[Math.floor(Math.random() * GLOW_OPTIONS.length)].id;
+        draft.accentId = ACCENT_OPTIONS[Math.floor(Math.random() * ACCENT_OPTIONS.length)].id;
+        renderBuilderOptions();
+        updateLivePreview();
+        showToast('✨', 'สุ่มแบบกระทงและดอกไม้ทันสมัยให้แล้วค่ะ');
+      }
+
+      function openBuilderModal() {
+        if (!builderModal) return;
+        if (senderInput) senderInput.value = draft.sender;
+        if (wishInput) wishInput.value = draft.wish;
+        renderBuilderOptions();
+        updateLivePreview();
+        builderModal.classList.remove('hidden');
+        builderModal.classList.add('flex');
+      }
+
+      function closeBuilderModal() {
+        if (!builderModal) return;
+        builderModal.classList.add('hidden');
+        builderModal.classList.remove('flex');
+      }
+
+      window.openKrathongBuilder = openBuilderModal;
+
+      // ================= LAUNCH & FLOAT KRATHONGS ON RIVER =================
+      function launchKrathongFromDraft() {
+        const sender = (senderInput ? senderInput.value : draft.sender || '').trim() || 'ชาว PI-TEC';
+        const wish = (wishInput ? wishInput.value : draft.wish || '').trim() || 'ขอให้การเรียนราบรื่น สอบผ่านทุกวิชา';
+
+        draft.sender = senderInput ? senderInput.value.trim() : draft.sender;
+        draft.wish = wish;
+
+        const id = `k-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+        const startX = 24 + Math.random() * 52;
+        const startY = 18 + Math.random() * 20;
+        const driftX = (Math.random() < 0.5 ? -1 : 1) * (3.5 + Math.random() * 6.5);
+        const driftY = 6.5 + Math.random() * 5.5;
+        const sizeScale = 0.88 + Math.random() * 0.22;
+
+        const krathongObj = {
+          id,
+          sender,
+          wish,
+          styleId: draft.styleId,
+          flowerIds: [...draft.flowerIds],
+          glowId: draft.glowId,
+          accentId: draft.accentId,
+          x: startX,
+          y: startY,
+          vx: driftX * 0.011,
+          vy: driftY * 0.011,
+          scale: sizeScale,
+          createdAt: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+        };
+
+        activeKrathongs.push(krathongObj);
+        wishHistory.unshift(krathongObj);
+        totalLaunchedCount += 1;
+
+        createKrathongDomElement(krathongObj);
+        updateCounterDisplay();
+        selectKrathong(krathongObj);
+        closeBuilderModal();
+        showToast('🏮', `ลอยกระทงของ "${sender}" ลงสู่สายน้ำแล้วค่ะ`);
+      }
+
+      function createKrathongDomElement(item) {
+        if (!krathongsLayer) return;
+        const wrapper = document.createElement('div');
+        wrapper.id = item.id;
+        wrapper.className = 'floating-krathong';
+        wrapper.style.left = `${item.x}%`;
+        wrapper.style.top = `${item.y}%`;
+        wrapper.setAttribute('role', 'button');
+        wrapper.setAttribute('tabindex', '0');
+        wrapper.setAttribute('aria-label', `กระทงของ ${item.sender}: ${item.wish}`);
+
+        const wPx = Math.round(98 * item.scale);
+        const hPx = Math.round(68 * item.scale);
+
+        wrapper.innerHTML = `
+          <div class="bob-motion flex flex-col items-center">
+            <!-- Floating Wish Card Alongside Krathong -->
+            <div class="mb-1 max-w-[172px] sm:max-w-[200px] px-2.5 py-1 rounded-xl bg-slate-950/88 border border-amber-300/45 shadow-lg text-center backdrop-blur-[2px]">
+              <div class="text-[10px] sm:text-[11px] font-bold text-amber-300 truncate">${escapeHtml(item.sender)}</div>
+              <div class="text-[10px] sm:text-[11px] text-white/95 line-clamp-2 leading-tight mt-0.5">${escapeHtml(item.wish)}</div>
+            </div>
+            <!-- Krathong Graphic -->
+            <div style="width:${wPx}px; height:${hPx}px;">
+              ${buildKrathongSVG(item.styleId, item.flowerIds, item.glowId, item.accentId)}
+            </div>
+          </div>
+        `;
+
+        wrapper.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectKrathong(item);
+        });
+
+        wrapper.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectKrathong(item);
+          }
+        });
+
+        krathongsLayer.appendChild(wrapper);
+      }
+
+      function selectKrathong(item) {
+        const styleObj = KRATHONG_STYLES.find((s) => s.id === item.styleId);
+        const flowerLabels = getSelectedFlowerLabels(item.flowerIds);
+
+        selectedKrathongId = item.id;
+        if (inspectorSender) inspectorSender.textContent = `ผู้ลอย: ${item.sender}`;
+        if (inspectorMeta) inspectorMeta.textContent = `${styleObj ? styleObj.name : ''} · ${flowerLabels.join(', ')}`;
+        if (inspectorWish) inspectorWish.textContent = `“${item.wish}”`;
+        if (wishInspector) wishInspector.classList.remove('hidden');
+
+        if (krathongsLayer) {
+          krathongsLayer.querySelectorAll('.floating-krathong').forEach((el) => {
+            el.classList.toggle('selected', el.id === item.id);
+          });
+        }
+      }
+
+      function hideInspector() {
+        selectedKrathongId = null;
+        if (wishInspector) wishInspector.classList.add('hidden');
+        if (krathongsLayer) {
+          krathongsLayer.querySelectorAll('.floating-krathong').forEach((el) => {
+            el.classList.remove('selected');
+          });
+        }
+      }
+
+      function stepRiverAnimation() {
+        for (let i = activeKrathongs.length - 1; i >= 0; i--) {
+          const k = activeKrathongs[i];
+          k.x += k.vx;
+          k.y += k.vy;
+
+          if (k.x < 14) {
+            k.x = 14;
+            k.vx = Math.abs(k.vx);
+          } else if (k.x > 86) {
+            k.x = 86;
+            k.vx = -Math.abs(k.vx);
+          }
+
+          if (k.y > 80) {
+            k.y = 18;
+            k.x = 22 + Math.random() * 56;
+          }
+
+          const el = document.getElementById(k.id);
+          if (el) {
+            el.style.left = `${k.x}%`;
+            el.style.top = `${k.y}%`;
+          }
+        }
+        requestAnimationFrame(stepRiverAnimation);
+      }
+
+      // ================= HEART BURST & WISHES MODAL =================
+      function sendPositiveHeart(e) {
+        positiveHeartsCount += 1;
+        updateCounterDisplay();
+
+        const burst = document.createElement('div');
+        burst.className = 'floating-heart-burst text-rose-400 text-xl sm:text-2xl font-bold';
+        const rect = heartSendBtn ? heartSendBtn.getBoundingClientRect() : { left: window.innerWidth / 2, top: 40, width: 20, height: 20 };
+        const clientX = (e && e.clientX) ? e.clientX : rect.left + rect.width / 2;
+        const clientY = (e && e.clientY) ? e.clientY : rect.top + rect.height / 2;
+        burst.style.left = `${clientX}px`;
+        burst.style.top = `${clientY}px`;
+        burst.textContent = '♥';
+        document.body.appendChild(burst);
+
+        setTimeout(() => {
+          burst.remove();
+        }, 1200);
+
+        showToast('♥', 'ส่งหัวใจและพลังบวกให้ชาว PI-TEC แล้วค่ะ');
+      }
+
+      function openWishesModal() {
+        if (!wishesModal || !wishesListContainer) return;
+        if (wishHistory.length === 0) {
+          wishesListContainer.innerHTML = `
+            <div class="text-center py-8 text-slate-400 text-sm">
+              ยังไม่มีคำอธิษฐานในรอบนี้ กด "ทำกระทงของฉัน" เพื่อลอยกระทงใบแรกได้เลยค่ะ
+            </div>
+          `;
+        } else {
+          wishesListContainer.innerHTML = wishHistory
+            .map((item) => {
+              const styleObj = KRATHONG_STYLES.find((s) => s.id === item.styleId);
+              const flowerLabels = getSelectedFlowerLabels(item.flowerIds);
+              return `
+                <div class="p-3 rounded-2xl bg-slate-800/80 border border-white/10">
+                  <div class="flex items-center justify-between gap-2 text-xs">
+                    <span class="font-bold text-amber-300 truncate">${escapeHtml(item.sender)}</span>
+                    <span class="text-slate-400 shrink-0">${escapeHtml(item.createdAt)}</span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-white mt-1 break-words">“${escapeHtml(item.wish)}”</p>
+                  <p class="text-[11px] text-amber-200/75 mt-1">
+                    ${escapeHtml(styleObj ? styleObj.name : '')} · ${escapeHtml(flowerLabels.join(', '))}
+                  </p>
+                </div>
+              `;
+            })
+            .join('');
+        }
+        wishesModal.classList.remove('hidden');
+        wishesModal.classList.add('flex');
+      }
+
+      function closeWishesModal() {
+        if (!wishesModal) return;
+        wishesModal.classList.add('hidden');
+        wishesModal.classList.remove('flex');
+      }
+
+      // ================= FULLSCREEN CONTROL =================
+      function syncFullscreenState() {
+        if (!festivalStage || !expandIcon || !compressIcon) return;
+        const active = Boolean(document.fullscreenElement) || festivalStage.classList.contains('is-expanded');
+        expandIcon.classList.toggle('hidden', active);
+        compressIcon.classList.toggle('hidden', !active);
+      }
+
+      function toggleFullscreen() {
+        if (!festivalStage) return;
+        if (!document.fullscreenElement) {
+          if (festivalStage.requestFullscreen) {
+            festivalStage.requestFullscreen().catch(() => {
+              festivalStage.classList.toggle('is-expanded');
+              syncFullscreenState();
+            });
+          } else {
+            festivalStage.classList.toggle('is-expanded');
+            syncFullscreenState();
+          }
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+
+      // ================= SYNTHESIZED THAI AMBIENT AUDIO (WEB AUDIO API) =================
+      function playPentatonicNote(freq, durationSec, peakGain) {
+        if (!audioCtx || audioCtx.state === 'closed') return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const overtone = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+
+        overtone.type = 'sine';
+        overtone.frequency.setValueAtTime(freq * 2, now);
+
+        const overtoneGain = audioCtx.createGain();
+        overtoneGain.gain.setValueAtTime(0.14, now);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(peakGain || 0.045, now + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + durationSec);
+
+        osc.connect(gain);
+        overtone.connect(overtoneGain);
+        overtoneGain.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        overtone.start(now);
+        osc.stop(now + durationSec + 0.05);
+        overtone.stop(now + durationSec + 0.05);
+      }
+
+      function startThaiAmbientMusic() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          showToast('🔇', 'เบราว์เซอร์นี้ไม่รองรับการสังเคราะห์เสียงค่ะ');
+          return;
+        }
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+
+        // Thai pentatonic scale frequencies (C4, D4, E4, G4, A4, C5, D5, E5)
+        const scale = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25];
+        let stepIndex = 0;
+
+        stopThaiAmbientMusic(true);
+        isMusicPlaying = true;
+        if (soundOffIcon) soundOffIcon.classList.add('hidden');
+        if (soundOnIcon) soundOnIcon.classList.remove('hidden');
+        if (soundToggleBtn) soundToggleBtn.setAttribute('aria-pressed', 'true');
+
+        playPentatonicNote(scale[0], 1.6, 0.04);
+        musicTimer = setInterval(() => {
+          if (!isMusicPlaying) return;
+          const pattern = [0, 2, 3, 4, 5, 4, 3, 2, 1, 2, 4, 5, 7, 5, 4, 3];
+          const note = scale[pattern[stepIndex % pattern.length]];
+          playPentatonicNote(note, 1.55, 0.038);
+          stepIndex += 1;
+        }, 720);
+      }
+
+      function stopThaiAmbientMusic(silent) {
+        isMusicPlaying = false;
+        if (musicTimer) {
+          clearInterval(musicTimer);
+          musicTimer = null;
+        }
+        if (soundOffIcon) soundOffIcon.classList.remove('hidden');
+        if (soundOnIcon) soundOnIcon.classList.add('hidden');
+        if (soundToggleBtn) soundToggleBtn.setAttribute('aria-pressed', 'false');
+        if (!silent) {
+          showToast('🔇', 'ปิดเสียงดนตรีบรรเลงแล้วค่ะ');
+        }
+      }
+
+      function toggleThaiAmbientMusic() {
+        if (isMusicPlaying) {
+          stopThaiAmbientMusic(false);
+        } else {
+          startThaiAmbientMusic();
+          showToast('🎵', 'เปิดเสียงดนตรีไทยบรรเลงเบาๆ แล้วค่ะ');
+        }
+      }
+
+      // ================= EVENT LISTENERS =================
+      if (soundToggleBtn) soundToggleBtn.addEventListener('click', toggleThaiAmbientMusic);
+      if (openBuilderBtn) openBuilderBtn.addEventListener('click', openBuilderModal);
+      if (closeBuilderBtn) closeBuilderBtn.addEventListener('click', closeBuilderModal);
+      if (cancelBuilderBtn) cancelBuilderBtn.addEventListener('click', closeBuilderModal);
+      if (randomizeDraftBtn) randomizeDraftBtn.addEventListener('click', randomizeDraft);
+      if (launchKrathongBtn) launchKrathongBtn.addEventListener('click', launchKrathongFromDraft);
+
+      if (greetingBubble) {
+        greetingBubble.addEventListener('click', (e) => {
+          if (e.target && e.target.closest && e.target.closest('#dismissGreetingBtn')) return;
+          openBuilderModal();
+        });
+        greetingBubble.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openBuilderModal();
+          }
+        });
+      }
+
+      // Document-level delegation fallback so clicking "ทำกระทงของฉัน" always opens modal cleanly
+      document.addEventListener('click', (e) => {
+        const trigger = e.target && e.target.closest ? e.target.closest('#openBuilderBtn') : null;
+        if (trigger && builderModal && builderModal.classList.contains('hidden')) {
+          openBuilderModal();
+        }
+      });
+
+      if (senderInput) {
+        senderInput.addEventListener('input', () => {
+          draft.sender = senderInput.value;
+          updateLivePreview();
+        });
+      }
+
+      if (wishInput) {
+        wishInput.addEventListener('input', () => {
+          draft.wish = wishInput.value;
+          updateLivePreview();
+        });
+      }
+
+      if (builderModal) {
+        builderModal.addEventListener('click', (e) => {
+          if (e.target === builderModal) {
+            closeBuilderModal();
+          }
+        });
+      }
+
+      if (heartSendBtn) heartSendBtn.addEventListener('click', sendPositiveHeart);
+      if (wishPanelBtn) wishPanelBtn.addEventListener('click', openWishesModal);
+      if (closeWishesBtn) closeWishesBtn.addEventListener('click', closeWishesModal);
+
+      if (wishesModal) {
+        wishesModal.addEventListener('click', (e) => {
+          if (e.target === wishesModal) {
+            closeWishesModal();
+          }
+        });
+      }
+
+      if (closeInspectorBtn) {
+        closeInspectorBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          hideInspector();
+        });
+      }
+
+      if (dismissGreetingBtn && greetingBoatGroup) {
+        dismissGreetingBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          greetingBoatGroup.classList.add('hidden');
+        });
+      }
+
+      if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+      document.addEventListener('fullscreenchange', syncFullscreenState);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeBuilderModal();
+          closeWishesModal();
+          hideInspector();
+        }
+      });
+
+      // ================= INITIALIZE =================
+      populateStars();
+      updateCounterDisplay();
+      requestAnimationFrame(stepRiverAnimation);
+    })();
+  </script>
+</body>
+</html>
